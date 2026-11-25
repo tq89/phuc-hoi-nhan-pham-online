@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phục Hồi Nhân Phẩm Online</title>
+  <link rel="stylesheet" href="/fonts/chakra-petch/500.css" />
+  <link rel="stylesheet" href="/fonts/chakra-petch/700.css" />
+  <link rel="stylesheet" href="/fonts/be-vietnam-pro/500.css" />
+  <link rel="stylesheet" href="/fonts/be-vietnam-pro/700.css" />
+  <link rel="stylesheet" href="/fonts/be-vietnam-pro/900.css" />
+  <link rel="stylesheet" href="/overlay.css" />
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage">
+      <div class="bg-grid"></div>
+      <div class="bg-glow"></div>
+      <div class="scanlines"></div>
+
+      <!-- Đầu trang -->
+      <header id="top">
+        <div class="title-wrap">
+          <div class="title" id="title" data-text="PHỤC HỒI NHÂN PHẨM ONLINE">PHỤC HỒI NHÂN PHẨM ONLINE</div>
+          <div class="subtitle" id="subtitle"></div>
+        </div>
+        <div class="statbar">
+          <div class="persona" id="persona"><span class="p-icon">⚖️</span><span class="p-label">CA TRỰC</span><b class="p-name">QUAN TOÀ</b></div>
+          <div class="chip"><i>👥</i><b id="st-viewers">0</b></div>
+          <div class="chip"><i>❤️</i><b id="st-likes">0</b></div>
+          <div class="chip"><i>🎁</i><b id="st-coins">0</b></div>
+          <div class="chip"><i>⛓️</i><b id="st-jailed">0</b></div>
+        </div>
+      </header>
+
+      <!-- Bảng xếp hạng -->
+      <section id="boards">
+        <div class="board gold"><h3>👑 VUA THĂM NUÔI</h3><ol id="b-gifters"></ol></div>
+        <div class="board cyan"><h3>🕵️ TRÙM TỐ GIÁC</h3><ol id="b-reporters"></ol></div>
+        <div class="board pink"><h3>🪨 LÌ ĐÒN NHẤT</h3><ol id="b-toughest"></ol></div>
+      </section>
+
+      <!-- 6 buồng giam -->
+      <section id="cells"></section>
+
+      <!-- Sân lao động -->
+      <section id="yard">
+        <div class="yard-label">⛏️ SÂN LAO ĐỘNG</div>
+        <div class="meter">
+          <div class="meter-fill" id="storm-fill"></div>
+          <div class="meter-text"><span>BÃO TIM</span><b id="storm-text">0 / 300</b></div>
+        </div>
+        <div class="rocks"><span>🪨</span><span>🪨</span><span>🪨</span><span>🪨</span><span>🪨</span></div>
+        <div id="labor" class="labor hidden">
+          <div class="labor-title">🚨 LAO ĐỘNG TẬP THỂ · <b id="labor-time">60</b>s</div>
+          <div class="labor-bar"><div id="labor-fill"></div></div>
+          <div class="labor-sub"><b id="labor-likes">0</b> / <span id="labor-goal">500</span> ❤️ → cả trại giảm <b id="labor-days">60</b> ngày</div>
+        </div>
+      </section>
+
+      <!-- Bản tin -->
+      <section id="feed"></section>
+
+      <!-- Cột phải: hướng dẫn / pháp luật -->
+      <aside id="info">
+        <div class="info-card" id="info-card"></div>
+      </aside>
+
+      <!-- Hàng chờ -->
+      <footer id="queue-bar">
+        <div class="q-label">HÀNG CHỜ NHẬP TRẠI <b id="q-count">0</b></div>
+        <div class="q-track"><div class="q-marquee" id="q-marquee">Trại còn chỗ — tố giác ngay!</div></div>
+      </footer>
+
+      <!-- Lớp hiệu ứng -->
+      <div id="filing" class="filing hidden"></div>
+      <div id="banner" class="banner hidden"></div>
+      <div id="verdict-layer"></div>
+      <canvas id="fx-canvas" width="1080" height="1920"></canvas>
+      <div id="float-layer"></div>
+      <div id="safezone" class="hidden">
+        <div class="sz sz-top">Vùng TikTok: tên kênh / người xem</div>
+        <div class="sz sz-chat">Vùng bình luận TikTok</div>
+        <div class="sz sz-btn">Nút quà / tim</div>
+      </div>
+      <div id="conn" class="conn hidden">⚠️ Mất kết nối máy chủ…</div>
+    </div>
+  </div>
+
+  <div id="start" class="start">
+    <div class="start-box">
+      <div class="start-title">PHỤC HỒI NHÂN PHẨM ONLINE</div>
+      <button id="start-btn">▶ BẤM ĐỂ BẬT ÂM THANH</button>
+      <p>Trong OBS (Browser Source) âm thanh tự bật. Thêm <code>?autostart</code> vào URL để ẩn màn hình này.</p>
+    </div>
+  </div>
+
+  <script type="module" src="/overlay.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "phuc-hoi-nhan-pham-online",
+  "version": "1.0.0",
+  "description": "Web game tương tác TikTok LIVE 9:16 - Phục Hồi Nhân Phẩm Online",
+  "type": "module",
+  "private": true,
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "sim": "SIMULATOR=1 node server/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@fontsource/be-vietnam-pro": "^5.2.0",
+    "@fontsource/chakra-petch": "^5.2.0",
+    "tiktok-live-connector": "2.5.0",
+    "ws": "^8.18.0"
+  }
+}

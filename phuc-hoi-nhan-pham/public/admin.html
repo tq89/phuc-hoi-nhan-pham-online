@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin · Phục Hồi Nhân Phẩm</title>
+  <link rel="stylesheet" href="/fonts/be-vietnam-pro/500.css" />
+  <link rel="stylesheet" href="/fonts/be-vietnam-pro/700.css" />
+  <link rel="stylesheet" href="/fonts/chakra-petch/700.css" />
+  <link rel="stylesheet" href="/admin.css" />
+</head>
+<body>
+  <div id="login" class="login hidden">
+    <form id="login-form" class="card">
+      <h1>🔐 Bảng điều khiển</h1>
+      <p>Nhập mã quản trị (in ra console khi server khởi động, hoặc trong <code>data/config.json</code> → <code>admin.token</code>).</p>
+      <input id="token" type="password" placeholder="Mã quản trị" autocomplete="current-password" />
+      <button type="submit">Vào</button>
+      <p id="login-err" class="err"></p>
+    </form>
+  </div>
+
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <div class="brand">⛓️ PHỤC HỒI NHÂN PHẨM · <span>Admin</span></div>
+      <div class="status">
+        <span id="conn-pill" class="pill">offline</span>
+        <span id="ai-pill" class="pill">AI</span>
+        <a href="/" target="_blank" class="btn ghost">Mở Overlay ↗</a>
+        <button id="save" class="btn primary">💾 Lưu cấu hình</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>📡 Kết nối TikTok LIVE</h2>
+        <label>Username kênh (không có @)<input data-k="tiktok.username" placeholder="ten_kenh_cua_ban" /></label>
+        <label>Euler Stream Sign API key <small>(khuyến nghị; bản miễn phí bị giới hạn)</small><input data-k="tiktok.signApiKey" type="password" /></label>
+        <label class="row"><input type="checkbox" data-k="tiktok.autoConnect" /> Tự kết nối khi khởi động (chạy 24/7: tự chờ đến khi kênh lên Live)</label>
+        <div class="btns"><button data-act="connect" class="btn primary">Kết nối</button><button data-act="disconnect" class="btn">Ngắt</button></div>
+        <p class="hint" id="conn-detail"></p>
+      </section>
+
+      <section class="card">
+        <h2>🧠 AI Gemini</h2>
+        <label class="row"><input type="checkbox" data-k="ai.enabled" /> Bật AI phân tích bình luận (tắt → dùng bộ phân tích dự phòng miễn phí)</label>
+        <label>Gemini API key<input data-k="ai.apiKey" type="password" /></label>
+        <label>Model <small>(bấm "Tải model" để lấy danh sách key của bạn dùng được)</small>
+          <div class="inline"><input data-k="ai.model" list="models" /><datalist id="models"></datalist><button data-act="list_models" class="btn">Tải model</button></div>
+        </label>
+        <div class="two">
+          <label>Timeout (ms)<input data-k="ai.timeoutMs" type="number" /></label>
+          <label>Giới hạn lượt gọi/phút<input data-k="ai.maxCallsPerMinute" type="number" /></label>
+        </div>
+        <label>Thử câu<div class="inline"><input id="ai-test-text" value="Bế con @Nhi vào trỏng vì tội nợ 500k chưa trả" /><button data-act="test_ai" class="btn">Thử AI</button></div></label>
+        <pre id="ai-out" class="out"></pre>
+        <p class="hint" id="ai-stats"></p>
+      </section>
+
+      <section class="card">
+        <h2>🎙️ Giọng đọc & Quản giáo</h2>
+        <label>Sắc thái quản giáo
+          <select data-k="persona"><option value="rotate">🔄 Luân phiên 10 phút</option><option value="judge">⚖️ Quan toà nghiêm khắc</option><option value="gangster">😎 Giang hồ mạng</option><option value="romance">💘 Ngôn tình sến súa</option></select>
+        </label>
+        <label>Nguồn giọng đọc
+          <select data-k="tts.provider"><option value="browser">Trình duyệt (miễn phí, cần giọng tiếng Việt trên máy)</option><option value="gemini">Gemini TTS (tự nhiên hơn, tốn phí API)</option><option value="off">Tắt</option></select>
+        </label>
+        <div class="two">
+          <label>Gemini TTS model<input data-k="tts.geminiModel" /></label>
+          <label>Giọng Gemini<input data-k="tts.voice" placeholder="Puck, Kore, Charon…" /></label>
+        </div>
+        <div class="two">
+          <label>Tốc độ (trình duyệt)<input data-k="tts.browserRate" type="number" step="0.05" /></label>
+          <label>Âm lượng<input data-k="tts.volume" type="number" step="0.1" min="0" max="1" /></label>
+        </div>
+        <label>Câu thử<div class="inline"><input id="tts-text" value="Xét thấy bị cáo Ngọc Nhi phạm tội seen không rep, toà tuyên phạt 120 ngày!" /><button data-act="test_tts" class="btn">Đọc thử</button></div></label>
+      </section>
+
+      <section class="card">
+        <h2>⚙️ Luật chơi</h2>
+        <label>Tiêu đề<input data-k="game.title" /></label>
+        <label>Dòng phụ<input data-k="game.subtitle" /></label>
+        <div class="three">
+          <label>Án tối thiểu<input data-k="game.minSentence" type="number" /></label>
+          <label>Án tối đa<input data-k="game.maxSentence" type="number" /></label>
+          <label>Trần cộng dồn<input data-k="game.maxStack" type="number" /></label>
+          <label>Ngày giảm/giây<input data-k="game.decayDaysPerSec" type="number" step="0.1" /></label>
+          <label>Số buồng (≤6)<input data-k="game.cellCount" type="number" /></label>
+          <label>Người/buồng (≤4)<input data-k="game.perCell" type="number" /></label>
+          <label>Ngày giảm/tim<input data-k="game.likeDays" type="number" /></label>
+          <label>Mốc Bão Tim<input data-k="game.stormThreshold" type="number" /></label>
+          <label>Bão Tim giảm<input data-k="game.stormDays" type="number" /></label>
+          <label>Follow giảm<input data-k="game.followDays" type="number" /></label>
+          <label>Share giảm<input data-k="game.shareDays" type="number" /></label>
+          <label>Hệ số tái phạm<input data-k="game.recidivismMultiplier" type="number" step="0.1" /></label>
+          <label>Hệ số tự thú<input data-k="game.selfConfessFactor" type="number" step="0.1" /></label>
+          <label>Bào chữa tối đa<input data-k="game.defenseMaxDays" type="number" /></label>
+          <label>Chờ giữa 2 lần tố (s)<input data-k="game.reportCooldownSec" type="number" /></label>
+          <label>Điểm danh mỗi (phút)<input data-k="game.rollCallMin" type="number" /></label>
+          <label>Lao động mỗi (phút)<input data-k="game.laborEventMin" type="number" /></label>
+          <label>Lao động: số tim<input data-k="game.laborGoalLikes" type="number" /></label>
+          <label>Lao động: thưởng<input data-k="game.laborRewardDays" type="number" /></label>
+          <label>Hàng chờ tối đa<input data-k="game.maxQueue" type="number" /></label>
+          <label>NPC sau (s) vắng<input data-k="game.npcIdleSec" type="number" /></label>
+        </div>
+        <label class="row"><input type="checkbox" data-k="game.npcEnabled" /> Có NPC khi trại vắng</label>
+        <label class="row"><input type="checkbox" data-k="game.showSafeZone" /> Hiện vùng UI TikTok trên overlay (để căn bố cục, tắt khi Live)</label>
+      </section>
+
+      <section class="card wide">
+        <h2>🎁 Quy đổi quà tặng</h2>
+        <p class="hint">Bậc thang theo <b>tổng xu</b> (giá quà × số lần combo). Bậc cao nhất thoả mãn sẽ được áp dụng. Hành động: để trống = giảm ngày, <code>pardon_one</code> = đặc xá 1 người, <code>pardon_all</code> = đại xá toàn trại.</p>
+        <table class="tbl" id="tiers"><thead><tr><th>Từ (xu)</th><th>Giảm (ngày)</th><th>Hành động</th><th>Nhãn</th><th></th></tr></thead><tbody></tbody></table>
+        <button id="add-tier" class="btn">+ Thêm bậc</button>
+        <h3>Quà đã gặp trên Live ("chế độ học")</h3>
+        <p class="hint">Hệ thống tự ghi lại ID quà thật. Gán riêng cho từng quà sẽ ghi đè bậc thang.</p>
+        <table class="tbl" id="learned"><thead><tr><th>Quà</th><th>ID</th><th>Xu</th><th>Lần</th><th>Ghi đè: ngày</th><th>Ghi đè: hành động</th></tr></thead><tbody></tbody></table>
+      </section>
+
+      <section class="card">
+        <h2>🛡️ Kiểm duyệt</h2>
+        <p class="hint">Mỗi dòng một từ/cụm. Không dấu → so trên chữ đã bỏ dấu. Có dấu → so chính xác (dùng cho từ dễ trùng như "lồn"/"lớn").</p>
+        <textarea data-k="moderation.blacklist" data-list rows="10"></textarea>
+        <label>Chặn người dùng (mỗi dòng một username)<textarea data-k="moderation.blockedUsers" data-list rows="3"></textarea></label>
+        <label>Kiểm tra câu<div class="inline"><input id="check-text" placeholder="Nhập câu để thử bộ lọc" /><button data-act="check_text" class="btn">Kiểm tra</button></div></label>
+        <p class="hint" id="check-out"></p>
+      </section>
+
+      <section class="card">
+        <h2>🧪 Giả lập (test không cần Live)</h2>
+        <div class="btns">
+          <button data-act="sim_start" class="btn primary">▶ Chạy giả lập</button><button data-act="sim_stop" class="btn">■ Dừng</button>
+          <label class="mini">Tốc độ<input id="sim-speed" type="number" value="1" step="0.5" min="0.25" /></label>
+        </div>
+        <div class="btns">
+          <button data-sim="report" class="btn">⛓ Tố giác</button>
+          <button data-sim="chat" class="btn">💬 Chat</button>
+          <button data-sim="like" class="btn">❤️ Tim</button>
+          <button data-sim="storm" class="btn">⛏ Bão tim</button>
+          <button data-sim="follow" class="btn">➕ Follow</button>
+          <button data-sim="share" class="btn">📣 Share</button>
+          <button data-sim="defense" class="btn">🧑‍⚖️ Bào chữa</button>
+          <button data-act="labor" class="btn">🚨 Lao động</button>
+        </div>
+        <div class="btns" id="sim-gifts"></div>
+        <label>Bình luận tuỳ ý (gõ như khán giả)<div class="inline"><input id="sim-user" placeholder="người gửi" value="khach_test" style="max-width:130px" /><input id="sim-text" placeholder="bế @ten vì tội ..." /><button id="sim-send" class="btn">Gửi</button></div></label>
+      </section>
+
+      <section class="card">
+        <h2>⛓️ Phạm nhân <small id="pr-count"></small></h2>
+        <div class="btns"><button data-act="clear" class="btn danger">Thả hết</button><button data-act="reset_session" class="btn">Reset BXH phiên</button></div>
+        <ul id="prisoners" class="plist"></ul>
+      </section>
+
+      <section class="card wide">
+        <h2>📜 Nhật ký</h2>
+        <pre id="logs" class="logs"></pre>
+      </section>
+    </main>
+    <div id="toast" class="toast hidden"></div>
+  </div>
+  <script type="module" src="/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+services:
+  phnp:
+    build: .
+    container_name: phuc-hoi-nhan-pham
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+      # Có thể để trống và nhập trong trang /admin
+      ADMIN_TOKEN: ${ADMIN_TOKEN:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      TIKTOK_USERNAME: ${TIKTOK_USERNAME:-}
+      EULER_API_KEY: ${EULER_API_KEY:-}
+    volumes:
+      - phnp-data:/app/data
+
+volumes:
+  phnp-data:
