@@ -1,6 +1,5 @@
-# Ki-m-tra-thi-t-b-
-Kiểm tra thiết bị PCCC
+# Phục Hồi Nhân Phẩm Online
 
-## Dự án con
+Web game tương tác thời gian thực cho TikTok LIVE (khung 9:16): khán giả bình luận để "tố giác" bạn bè vào trại ảo, thả tim/tặng quà để giảm án, kèm thẻ "Góc Pháp Luật Thật".
 
-- [`phuc-hoi-nhan-pham/`](phuc-hoi-nhan-pham/) — Web game TikTok LIVE 9:16 "Phục Hồi Nhân Phẩm Online"
+Mã nguồn, hướng dẫn cài đặt và vận hành: [`phuc-hoi-nhan-pham/`](phuc-hoi-nhan-pham/README.md)
